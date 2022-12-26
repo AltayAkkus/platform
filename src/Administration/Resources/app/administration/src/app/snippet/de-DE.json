@@ -19,7 +19,8 @@
       "PROMOTION_DUPLICATE_PATTERN_VIOLATION": "Dieses Aktionscode-Muster wird bereits in einer anderen Aktion verwendet. Bitte benutze ein anderes Muster.",
       "PROMOTION_DUPLICATED_CODE_VIOLATION": "Dieser Aktionscode wird bereits in einer anderen Aktion verwendet. Bitte benutze ein anderen Aktionscode.",
       "PROMOTION_DISCOUNT_MIN_VALUE_VIOLATION": "Wert darf nicht kleiner sein als {value}",
-      "PROMOTION_DISCOUNT_MAX_VALUE_VIOLATION": "Wert darf nicht größer sein als {value}"
+      "PROMOTION_DISCOUNT_MAX_VALUE_VIOLATION": "Wert darf nicht größer sein als {value}",
+      "PROMOTION_NO_SALES_CHANNEL_VIOLATION": "Aktive Aktionen brauchen einen zugewiesenen Verkaufskanal. Bitte füge einen Verkaufskanal hinzu."
     },
     "default": {
       "add": "Hinzufügen",

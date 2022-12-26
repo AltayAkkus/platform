@@ -203,6 +203,9 @@ class PromotionValidator implements EventSubscriberInterface
      */
     private function validatePromotion(array $promotion, array $payload, ConstraintViolationList $violationList, int $index): void
     {
+        /** @var bool $active */
+        $active = $this->getValue($payload, 'active', $promotion);
+
         /** @var string|null $validFrom */
         $validFrom = $this->getValue($payload, 'valid_from', $promotion);
 
@@ -298,6 +301,34 @@ class PromotionValidator implements EventSubscriberInterface
                 $index
             ));
         }
+
+        // If the promotion has active set to true, but no sales channel added, we should warn the user
+        // because Shopware will behave like this promotion is not active.
+        if ($promotionId !== null) {
+            $qb = $this->connection->createQueryBuilder();
+
+            $query = $qb
+                ->select('COUNT(*)')
+                ->from('promotion_sales_channel')
+                ->where($qb->expr()->eq('promotion_id', ':promotion_id'))
+                ->setParameter('promotion_id', $promotionId);
+
+                /** @var bool $salesChannelsAdded */ 
+                $salesChannelsAdded = ((int) $query->executeQuery()->fetchOne()) > 0;
+        } else {
+            $salesChannelsAdded = false;
+        }
+        
+        if($active and !($salesChannelsAdded)) {
+            $violationList->add($this->buildViolation(
+                'Active promotions need a sales channel. Please add a sales channel.',
+                $active,
+                'active',
+                'PROMOTION_NO_SALES_CHANNEL_VIOLATION',
+                $index
+            ));
+        }
+        
     }
 
     /**
